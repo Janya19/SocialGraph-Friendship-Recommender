@@ -1,0 +1,8 @@
+# Compiled executable
+recommender
+
+# Object files
+*.o
+
+# Mac/OS specific
+.DS_Store
