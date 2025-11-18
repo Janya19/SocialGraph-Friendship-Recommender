@@ -1,6 +1,6 @@
 #include "influence.h"
 #include "utils.h"
-#include "pagerank.h" // <-- It calls your pagerank function
+#include "pagerank.h" 
 #include <queue>
 #include <vector>
 #include <utility>
@@ -26,7 +26,6 @@ vector<int> recommend_by_influence(const SocialNetwork& network, int userID, int
         const auto& candidateTags = network.get_tags(candidateID);
         double jaccard = jaccard_similarity(myTags, candidateTags);
         
-        // --- UPGRADED LOGIC ---
         // Get the pre-calculated PageRank score
         double pagerank = pagerank_scores[candidateID]; 
         

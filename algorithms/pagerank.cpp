@@ -1,7 +1,7 @@
 #include "pagerank.h"
 #include <vector>
 #include <cmath>
-#include <unordered_map> // <-- This was the missing include
+#include <unordered_map>
 
 using namespace std;
 
@@ -47,8 +47,7 @@ unordered_map<int, double> calculate_pagerank(
         for (int userID : allUsers) {
             // (1-d)/N is the "random jump" probability
             // d * (newScores[userID] + ... ) is the "follow a link" probability
-            newScores[userID] = (1.0 - dampingFactor) / N + 
-                                dampingFactor * (newScores[userID] + total_S_contribution / N);
+            newScores[userID] = (1.0 - dampingFactor) / N + dampingFactor * (newScores[userID] + total_S_contribution / N);
         }
 
         // 3. Update scores for the next iteration

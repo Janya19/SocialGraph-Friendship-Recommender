@@ -1,16 +1,15 @@
 #pragma once
-// using namespace std;
+
 #include <unordered_set>
 #include <string>
 
-/**
- * @brief Calculates Jaccard Similarity between two sets of strings.
- * @param setA First set of tags.
- * @param setB Second set of tags.
- * @return Jaccard Index (Intersection over Union) as a double.
- */
-inline double jaccard_similarity(const unordered_set<string>& setA,
-                                   const unordered_set<string>& setB) {
+
+//Calculates Jaccard Similarity between two sets of strings.
+//setA First set of tags.
+//setB Second set of tags.
+//Return Jaccard Index (Intersection over Union) as a double.
+ 
+inline double jaccard_similarity(const unordered_set<string>& setA, const unordered_set<string>& setB) {
     if (setA.empty() && setB.empty()) return 1.0; // Two empty sets are identical
 
     // Ensure we iterate over the smaller set for efficiency

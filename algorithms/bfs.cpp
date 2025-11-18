@@ -18,7 +18,7 @@ vector<int> get_shortest_path(const SocialNetwork& network, int startUser, int e
     unordered_set<int> visited; // To avoid loops
     
     // "parent_map" is the key. It stores: map<node, its_parent>
-    // How did we get to node 'B'? From 'A'. So: parent_map[B] = A
+    // So: parent_map[B] = A
     unordered_map<int, int> parent_map;
 
     // 3. Start the BFS

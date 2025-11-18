@@ -11,8 +11,7 @@
 using namespace std;
 using ScorePair = pair<double, int>;
 
-vector<int> recommend_by_hybrid(const SocialNetwork& network, int userID, int top_k,
-                                       double w_influence, double w_proximity) {
+vector<int> recommend_by_hybrid(const SocialNetwork& network, int userID, int top_k, double w_influence, double w_proximity) {
     
     unordered_map<int, double> hybridScores;
 
