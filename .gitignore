@@ -6,3 +6,4 @@ recommender
 
 # Mac/OS specific
 .DS_Store
+.vscode/
