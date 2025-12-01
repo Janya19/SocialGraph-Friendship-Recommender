@@ -21,8 +21,8 @@ vector<int> recommend_by_influence(const SocialNetwork& network, int userID, int
     );
     LogManager::log("source", userID);
     
-    // --- Caclulate PageRank scores ONCE ---
-    unordered_map<int, double> pagerank_scores = calculate_pagerank(network);
+    // --- Caclulate PageRank scores ONCE (without logging) ---
+    unordered_map<int, double> pagerank_scores = calculate_pagerank(network, 0.85, 100, false);
 
     priority_queue<ScorePair> pq;
     const auto& myFriends = network.get_friends(userID);

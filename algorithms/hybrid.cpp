@@ -25,8 +25,8 @@ vector<int> recommend_by_hybrid(const SocialNetwork& network, int userID, int to
     
     unordered_map<int, double> hybridScores;
 
-    // --- Pre-calculate PageRank ---
-    unordered_map<int, double> pagerank_scores = calculate_pagerank(network);
+    // --- Pre-calculate PageRank (without logging) ---
+    unordered_map<int, double> pagerank_scores = calculate_pagerank(network, 0.85, 100, false);
 
     // --- Influence Score Logic ---
     const auto& myFriends = network.get_friends(userID);

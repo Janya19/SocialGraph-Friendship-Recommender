@@ -49,6 +49,11 @@ int get_int_input(const string& prompt) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             return value;
         } else {
+            // Check for EOF or stream failure
+            if (cin.eof()) {
+                cout << "\n  Error: End of input detected. Exiting." << endl;
+                exit(1);
+            }
             // Bad input (e.g., "abc")
             cout << "  Error: Invalid input. Please enter a number." << endl;
             cin.clear(); // Clear the error flag

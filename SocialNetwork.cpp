@@ -58,6 +58,11 @@ void SocialNetwork::save_data(const string& edgeFile, const string& tagFile) con
 }
 
 void SocialNetwork::load_data(const string& edgeFile, const string& tagFile) {
+    // Clear existing data to prevent duplication if called multiple times
+    adjList.clear();
+    userTags.clear();
+    allUserIDs.clear();
+    
     ifstream edgeStream(edgeFile);
     string line;
     int userA, userB;

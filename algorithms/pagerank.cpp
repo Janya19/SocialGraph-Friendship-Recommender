@@ -9,15 +9,18 @@ using namespace std;
 unordered_map<int, double> calculate_pagerank(
     const SocialNetwork& network,
     double dampingFactor,
-    int iterations) {
+    int iterations,
+    bool log_results) {
 
-    // Clear logs and set algorithm info
-    LogManager::clear();
-    LogManager::setAlgorithm(
-        "PageRank",
-        "Measuring user importance by analyzing the network structure - users connected to many important users get higher scores.",
-        -1  // No specific target user
-    );
+    // Clear logs and set algorithm info only if logging is enabled
+    if (log_results) {
+        LogManager::clear();
+        LogManager::setAlgorithm(
+            "PageRank",
+            "Measuring user importance by analyzing the network structure - users connected to many important users get higher scores.",
+            -1  // No specific target user
+        );
+    }
 
     const auto& allUsers = network.get_all_users();
     int N = allUsers.size();
@@ -63,18 +66,20 @@ unordered_map<int, double> calculate_pagerank(
         scores = newScores;
     }
     
-    // --- Log High PageRank Users ---
-    // Find max score for normalization
-    double maxScore = 0.0;
-    for (const auto& [user, score] : scores) {
-        if (score > maxScore) maxScore = score;
-    }
-    
-    // Log users with high PageRank (top 30%)
-    if (maxScore > 0) {
+    // --- Log High PageRank Users (only if logging enabled) ---
+    if (log_results) {
+        // Find max score for normalization
+        double maxScore = 0.0;
         for (const auto& [user, score] : scores) {
-            if (score >= maxScore * 0.3) {
-                LogManager::log("visit", user, -1, score);
+            if (score > maxScore) maxScore = score;
+        }
+        
+        // Log users with high PageRank (top 30%)
+        if (maxScore > 0) {
+            for (const auto& [user, score] : scores) {
+                if (score >= maxScore * 0.3) {
+                    LogManager::log("visit", user, -1, score);
+                }
             }
         }
     }

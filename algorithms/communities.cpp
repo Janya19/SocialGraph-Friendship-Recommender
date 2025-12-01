@@ -3,10 +3,19 @@
 #include <unordered_map>
 #include <vector>
 #include <map>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
 unordered_map<int, int> detect_communities(const SocialNetwork& network, int iterations) {
+    
+    // Initialize random seed for tie-breaking
+    static bool seeded = false;
+    if (!seeded) {
+        srand(time(nullptr));
+        seeded = true;
+    }
     
     const auto& allUsers = network.get_all_users();
     unordered_map<int, int> labels;
@@ -35,17 +44,26 @@ unordered_map<int, int> detect_communities(const SocialNetwork& network, int ite
                 neighbor_votes[labels[friendID]]++;
             }
 
-            // --- Find the winning label ---
+            // --- Find the winning label (with random tie-breaking) ---
             int max_votes = 0;
-            int winning_label = -1;
+            vector<int> candidates; // All labels with max votes
             
-            // Find the label with the highest vote count
+            // Find the maximum vote count
             for (auto const& [label, count] : neighbor_votes) {
                 if (count > max_votes) {
                     max_votes = count;
-                    winning_label = label;
                 }
             }
+            
+            // Collect all labels with max votes
+            for (auto const& [label, count] : neighbor_votes) {
+                if (count == max_votes) {
+                    candidates.push_back(label);
+                }
+            }
+            
+            // Randomly select one if there's a tie
+            int winning_label = candidates[rand() % candidates.size()];
             
             // Update the user's label for the *next* iteration
             // Log the recolor event when a user changes community

@@ -13,5 +13,6 @@
 std::unordered_map<int, double> calculate_pagerank(
     const SocialNetwork& network,
     double dampingFactor = 0.85,
-    int iterations = 100
+    int iterations = 100,
+    bool log_results = true
 );

@@ -31,7 +31,7 @@ public:
         out << "  },\n";
         
         // --- Calculate PageRank for all users ---
-        unordered_map<int, double> pagerank_scores = calculate_pagerank(network);
+        unordered_map<int, double> pagerank_scores = calculate_pagerank(network, 0.85, 100, false);
         
         // --- 1. Export Nodes ---
         out << "  nodes: [\n";

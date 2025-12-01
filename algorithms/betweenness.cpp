@@ -35,8 +35,8 @@ unordered_map<int, double> calculate_betweenness_scores(const SocialNetwork& net
         
         // map: User -> List of its parents in the shortest path
         unordered_map<int, vector<int>> predecessors;
-        // map: User -> Number of shortest paths from 's' to this user
-        unordered_map<int, int> shortest_path_count;
+        // map: User -> Number of shortest paths from 's' to this user (use double to prevent overflow)
+        unordered_map<int, double> shortest_path_count;
         // map: User -> Distance from 's'
         unordered_map<int, int> distance;
         

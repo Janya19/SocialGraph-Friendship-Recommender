@@ -55,14 +55,18 @@ unordered_map<int, double> calculate_closeness_scores(const SocialNetwork& netwo
             }
         }
         
-        // --- 3. Calculate Closeness Score ---
-        // Closeness is only calculated if the entire network is reachable (i.e., N-1 nodes)
-        // Note: For simplicity and since our graph is connected, we assume all N-1 nodes are reachable.
-        if (sum_of_distances > 0) {
-            // Closeness = (N - 1) / sum of all shortest paths
-            scores[startUser] = (double)(N - 1) / sum_of_distances;
+        // --- 3. Calculate Closeness Score (Handle disconnected components) ---
+        // Use the actual number of reachable nodes, not the total network size
+        // This prevents isolated users from getting artificially high scores
+        if (sum_of_distances > 0 && reachable_nodes > 0) {
+            // Closeness = (reachable_nodes) / sum of distances to reachable nodes
+            // Normalized by total network size to penalize disconnected components
+            double rawCloseness = (double)reachable_nodes / sum_of_distances;
+            // Apply penalty for not reaching all nodes
+            double connectivityRatio = (double)reachable_nodes / (N - 1);
+            scores[startUser] = rawCloseness * connectivityRatio;
         } else {
-            // Should only happen if N=1 or error. We set score to 0.
+            // Isolated node or error
             scores[startUser] = 0.0;
         }
     }

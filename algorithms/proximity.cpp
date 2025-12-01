@@ -51,11 +51,12 @@ vector<int> recommend_by_proximity(const SocialNetwork& network, int userID, int
     while (!pq.empty() && recommendations.size() < static_cast<size_t>(top_k)) {
         // DEFINE 'rec' HERE so we can use it for logging
         int rec = pq.top().second;
+        double score = pq.top().first;
         
         recommendations.push_back(rec);
         
-        // LOG: This is a final recommendation!
-        LogManager::log("match", rec); 
+        // LOG: This is a final recommendation with score!
+        LogManager::log("match", rec, -1, score); 
         
         pq.pop();
     }
