@@ -14,6 +14,7 @@
 #include "algorithms/communities.h" 
 #include "algorithms/closeness.h" 
 #include "algorithms/betweenness.h"
+#include "WebExporter.h"
 
 using namespace std;
 
@@ -303,6 +304,14 @@ void analyze_communities(const SocialNetwork& network) {
     cout << "\n--- Analyzing Network Communities ---" << endl;
     cout << "Running Label Propagation Algorithm..." << endl;
 
+    // Clear previous log history and set algorithm info
+    LogManager::clear();
+    LogManager::setAlgorithm(
+        "Community Detection",
+        "Using Label Propagation to identify clusters of densely connected users. Each node iteratively adopts the most common label among its neighbors.",
+        -1
+    );
+
     // 1. Run the algorithm
     unordered_map<int, int> community_map = detect_communities(network);
 
@@ -388,8 +397,9 @@ while (true) {
         cout << "7. Find 'Bridge' Users" << endl;
         cout << "8. Save Network (Manual)" << endl; 
         cout << "9. Save and Exit" << endl;
+        cout << "10. Export to Web Dashboard" << endl;
         
-        int choice = get_int_input("Enter your choice (1-9): ");
+        int choice = get_int_input("Enter your choice (1-10): ");
 
         if (choice == 1) {
             get_recommendations(network);
@@ -413,7 +423,12 @@ while (true) {
             cout << "\nSaving all changes before exiting..." << endl;
             network.save_data(edgeFile, tagFile);
             break; // Exit
-        } else {
+        }
+        else if (choice == 10) {
+            cout << "\nGenerating Dashboard Data..." << endl;
+            WebExporter::export_graph(network);
+        } 
+        else {
             cout << "  Error: Invalid choice. Please select 1-9." << endl;
             continue;
         }

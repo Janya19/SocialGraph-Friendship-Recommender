@@ -1,30 +1,35 @@
 #include "bfs.h"
+#include "../LogManager.h" // <--- Include the logger
 #include <queue>
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
-#include <algorithm> // For std::reverse
+#include <algorithm>
+
+using namespace std;
 
 vector<int> get_shortest_path(const SocialNetwork& network, int startUser, int endUser) {
-    vector<int> path; // This is what we will return
-
-    // 1. Handle edge cases
-    if (startUser == endUser) {
-        return {startUser}; // Path to yourself is just you
-    }
+    // 1. CLEAR previous logs before starting and set algorithm info
+    LogManager::clear();
+    LogManager::setAlgorithm(
+        "Shortest Path (BFS)",
+        "Finding shortest path using Breadth-First Search. Explores the network level by level to find the minimum number of hops between users.",
+        startUser
+    );
     
-    // 2. Setup BFS data structures
-    queue<int> q; // The queue for nodes to visit
-    unordered_set<int> visited; // To avoid loops
+    vector<int> path;
+    if (startUser == endUser) return {startUser};
     
-    // "parent_map" is the key. It stores: map<node, its_parent>
-    // So: parent_map[B] = A
+    queue<int> q;
+    unordered_set<int> visited;
     unordered_map<int, int> parent_map;
 
-    // 3. Start the BFS
     q.push(startUser);
     visited.insert(startUser);
-    parent_map[startUser] = -1; // The start user has no parent
+    parent_map[startUser] = -1;
+
+    // LOG: Starting the search
+    LogManager::log("visit", startUser);
 
     bool found = false;
 
@@ -32,32 +37,36 @@ vector<int> get_shortest_path(const SocialNetwork& network, int startUser, int e
         int currentUser = q.front();
         q.pop();
 
+        // LOG: We are now processing this node (the "ripple" expands from here)
+        LogManager::log("visit", currentUser);
+
         if (currentUser == endUser) {
             found = true;
-            break; // We found the target!
+            break;
         }
 
-        // Add all neighbors to the queue
         for (int neighbor : network.get_friends(currentUser)) {
             if (visited.find(neighbor) == visited.end()) {
-                // This is a new node
                 visited.insert(neighbor);
-                parent_map[neighbor] = currentUser; // We got to 'neighbor' from 'currentUser'
+                parent_map[neighbor] = currentUser;
                 q.push(neighbor);
+                
+                // LOG: We found a new neighbor to look at later
+                LogManager::log("scan", neighbor);
             }
         }
     }
 
-    // 4. Reconstruct the path
     if (found) {
         int current = endUser;
         while (current != -1) {
             path.push_back(current);
-            current = parent_map[current]; // Walk backwards up the chain
+            // LOG: Record the final path nodes so we can color them Gold later
+            LogManager::log("path", current);
+            current = parent_map[current];
         }
-        // The path is backwards (endUser -> startUser), so reverse it
         reverse(path.begin(), path.end());
     }
     
-    return path; // Will be empty if 'found' is false
+    return path;
 }

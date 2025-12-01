@@ -1,4 +1,5 @@
 #include "betweenness.h"
+#include "../LogManager.h"
 #include <stack>
 #include <queue>
 #include <vector>
@@ -7,6 +8,14 @@
 using namespace std;
 
 unordered_map<int, double> calculate_betweenness_scores(const SocialNetwork& network) {
+    
+    // Clear logs and set algorithm info (no specific target user for centrality metrics)
+    LogManager::clear();
+    LogManager::setAlgorithm(
+        "Betweenness Centrality",
+        "Finding bridge users who connect different parts of the network by measuring how often they appear on shortest paths between other users.",
+        -1  // No specific target user
+    );
     
     const auto& allUsers = network.get_all_users();
     unordered_map<int, double> betweenness_scores;
@@ -90,6 +99,22 @@ unordered_map<int, double> calculate_betweenness_scores(const SocialNetwork& net
     // For an undirected graph, we must divide all scores by 2.
     for (auto& [user, score] : betweenness_scores) {
         score /= 2.0;
+    }
+    
+    // --- Log High Betweenness Users ---
+    // Find max score for normalization
+    double maxScore = 0.0;
+    for (const auto& [user, score] : betweenness_scores) {
+        if (score > maxScore) maxScore = score;
+    }
+    
+    // Log users with significant betweenness (top 30%)
+    if (maxScore > 0) {
+        for (const auto& [user, score] : betweenness_scores) {
+            if (score >= maxScore * 0.3) {
+                LogManager::log("visit", user, -1, score);
+            }
+        }
     }
 
     return betweenness_scores;

@@ -1,4 +1,5 @@
 #include "communities.h"
+#include "../LogManager.h"
 #include <unordered_map>
 #include <vector>
 #include <map>
@@ -45,7 +46,12 @@ unordered_map<int, int> detect_communities(const SocialNetwork& network, int ite
                     winning_label = label;
                 }
             }
+            
             // Update the user's label for the *next* iteration
+            // Log the recolor event when a user changes community
+            if (winning_label != labels[userID]) {
+                LogManager::log("recolor", userID, -1, winning_label);
+            }
             new_labels[userID] = winning_label;
         }
         

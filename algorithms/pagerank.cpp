@@ -1,4 +1,5 @@
 #include "pagerank.h"
+#include "../LogManager.h"
 #include <vector>
 #include <cmath>
 #include <unordered_map>
@@ -9,6 +10,14 @@ unordered_map<int, double> calculate_pagerank(
     const SocialNetwork& network,
     double dampingFactor,
     int iterations) {
+
+    // Clear logs and set algorithm info
+    LogManager::clear();
+    LogManager::setAlgorithm(
+        "PageRank",
+        "Measuring user importance by analyzing the network structure - users connected to many important users get higher scores.",
+        -1  // No specific target user
+    );
 
     const auto& allUsers = network.get_all_users();
     int N = allUsers.size();
@@ -52,6 +61,22 @@ unordered_map<int, double> calculate_pagerank(
 
         // 3. Update scores for the next iteration
         scores = newScores;
+    }
+    
+    // --- Log High PageRank Users ---
+    // Find max score for normalization
+    double maxScore = 0.0;
+    for (const auto& [user, score] : scores) {
+        if (score > maxScore) maxScore = score;
+    }
+    
+    // Log users with high PageRank (top 30%)
+    if (maxScore > 0) {
+        for (const auto& [user, score] : scores) {
+            if (score >= maxScore * 0.3) {
+                LogManager::log("visit", user, -1, score);
+            }
+        }
     }
 
     return scores;

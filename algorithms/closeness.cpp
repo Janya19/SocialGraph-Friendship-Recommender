@@ -1,4 +1,5 @@
 #include "closeness.h"
+#include "../LogManager.h"
 #include <queue>
 #include <limits>
 #include <cmath>
@@ -6,6 +7,14 @@
 using namespace std;
 
 unordered_map<int, double> calculate_closeness_scores(const SocialNetwork& network) {
+    
+    // Clear logs and set algorithm info
+    LogManager::clear();
+    LogManager::setAlgorithm(
+        "Closeness Centrality",
+        "Finding well-connected users who can reach everyone in the network quickly by measuring average shortest path distances.",
+        -1  // No specific target user
+    );
     
     const auto& allUsers = network.get_all_users();
     int N = allUsers.size();
@@ -55,6 +64,22 @@ unordered_map<int, double> calculate_closeness_scores(const SocialNetwork& netwo
         } else {
             // Should only happen if N=1 or error. We set score to 0.
             scores[startUser] = 0.0;
+        }
+    }
+    
+    // --- Log High Closeness Users ---
+    // Find max score for normalization
+    double maxScore = 0.0;
+    for (const auto& [user, score] : scores) {
+        if (score > maxScore) maxScore = score;
+    }
+    
+    // Log users with high closeness (top 30%)
+    if (maxScore > 0) {
+        for (const auto& [user, score] : scores) {
+            if (score >= maxScore * 0.3) {
+                LogManager::log("visit", user, -1, score);
+            }
         }
     }
     
