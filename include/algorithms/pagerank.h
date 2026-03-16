@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SocialNetwork.h"
+#include "SocialNetwork.h"
 #include <unordered_map>
 
 

@@ -33,17 +33,17 @@ The C++ backend includes a custom `WebExporter` that serializes the current netw
 
 ## Code Structure
 
-- `main.cpp`: Contains all the logic for the interactive menu system and user input validation.
-- `SocialNetwork.h` / `.cpp`: The core class that holds the graph data (adjacency lists) and tag data. It manages all data modifications (adding users/friends) and file I/O (loading and saving).
-- `algorithms/`: A directory containing all "from scratch" algorithm implementations.
-  - `pagerank.h` / `.cpp`: Implements the PageRank algorithm.
-  - `proximity.h` / `.cpp`: Implements the Adamic-Adar algorithm.
-  - `influence.h` / `.cpp`: Implements the PageRank * Jaccard score.
-  - `hybrid.h` / `.cpp`: Implements the combined hybrid model.
-  - `bfs.h` / `.cpp`: Implements the Breadth-First Search algorithm for shortest paths.
-- `utils.h`: Contains helper functions like `jaccard_similarity`.
+- `src/`: Contains all of the source code (`.cpp`) files.
+  - `main.cpp`: Contains all the logic for the interactive menu system and user input validation.
+  - `SocialNetwork.cpp`: Core logic for managing graph modifications and file I/O.
+  - `algorithms/`: Modular implementations of PageRank, BFS, Adamic-Adar, etc.
+- `include/`: Contains all header (`.h`) declarations for the project structure.
+  - `SocialNetwork.h`: Interface for the adjacency lists and tag graph.
+  - `WebExporter.h`: Data serialization layer mapping C++ state to JS objects.
+  - `LogManager.h`: Tracks the internal history.
+  - `algorithms/`: The interface APIs for the advanced graph algorithms.
 - `data/`: Contains the graph edge list and tag files.
-- `Makefile`: The build script.
+- `Makefile`: The build script mapping the `src/` files using `-Iinclude`.
 
 ## Compilation & Usage
 

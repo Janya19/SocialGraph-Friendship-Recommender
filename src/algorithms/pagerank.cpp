@@ -1,5 +1,5 @@
-#include "pagerank.h"
-#include "../LogManager.h"
+#include "algorithms/pagerank.h"
+#include "LogManager.h"
 #include <vector>
 #include <cmath>
 #include <unordered_map>

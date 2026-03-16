@@ -1,5 +1,5 @@
-#include "proximity.h"
-#include "../LogManager.h" 
+#include "algorithms/proximity.h"
+#include "LogManager.h" 
 #include <unordered_map>
 #include <queue>
 #include <utility>

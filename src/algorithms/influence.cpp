@@ -1,7 +1,7 @@
-#include "influence.h"
-#include "utils.h"
-#include "pagerank.h"
-#include "../LogManager.h"
+#include "algorithms/influence.h"
+#include "algorithms/utils.h"
+#include "algorithms/pagerank.h"
+#include "LogManager.h"
 #include <queue>
 #include <vector>
 #include <utility>

@@ -1,5 +1,5 @@
-#include "betweenness.h"
-#include "../LogManager.h"
+#include "algorithms/betweenness.h"
+#include "LogManager.h"
 #include <stack>
 #include <queue>
 #include <vector>

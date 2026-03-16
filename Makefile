@@ -2,13 +2,13 @@
 CXX = g++
 
 # Flags: -std=c++17, -Wall (all warnings), -O2 (optimize), -g (debug symbols)
-CXXFLAGS = -std=c++17 -Wall -O2 -g
+CXXFLAGS = -std=c++17 -Wall -O2 -g -Iinclude
 
 # Executable name
 TARGET = recommender
 
 # Source files
-SRCS = main.cpp SocialNetwork.cpp $(wildcard algorithms/*.cpp)
+SRCS = src/main.cpp src/SocialNetwork.cpp $(wildcard src/algorithms/*.cpp)
 
 # Object files (derived from SRCS)
 OBJS = $(SRCS:.cpp=.o)

@@ -1,7 +1,7 @@
 #pragma once
 
 using namespace std;
-#include "../SocialNetwork.h"
+#include "SocialNetwork.h"
 #include <unordered_map>
 #include <vector>
 

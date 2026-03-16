@@ -1,5 +1,5 @@
-#include "bfs.h"
-#include "../LogManager.h" // <--- Include the logger
+#include "algorithms/bfs.h"
+#include "LogManager.h" // <--- Include the logger
 #include <queue>
 #include <unordered_map>
 #include <vector>

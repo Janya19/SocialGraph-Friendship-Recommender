@@ -1,5 +1,5 @@
-#include "communities.h"
-#include "../LogManager.h"
+#include "algorithms/communities.h"
+#include "LogManager.h"
 #include <unordered_map>
 #include <vector>
 #include <map>

@@ -1,5 +1,5 @@
-#include "closeness.h"
-#include "../LogManager.h"
+#include "algorithms/closeness.h"
+#include "LogManager.h"
 #include <queue>
 #include <limits>
 #include <cmath>

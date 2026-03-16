@@ -1,9 +1,9 @@
-#include "hybrid.h"
-#include "influence.h"
-#include "proximity.h"
-#include "utils.h"
-#include "pagerank.h"
-#include "../LogManager.h"
+#include "algorithms/hybrid.h"
+#include "algorithms/influence.h"
+#include "algorithms/proximity.h"
+#include "algorithms/utils.h"
+#include "algorithms/pagerank.h"
+#include "LogManager.h"
 #include <unordered_map>
 #include <queue>
 #include <utility>
