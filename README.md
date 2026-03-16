@@ -1,81 +1,65 @@
-Friendship Recommendation System
+# SocialGraph: Friendship Recommender & Network Analyzer
 
-This is a dynamic, persistent C++ application that models a social network and provides advanced friend recommendations. It's built "from scratch" using only standard C++ libraries.
+A dynamic, stateful C++ application that models a social network graph and provides advanced friend recommendations, network topology analysis, and interactive web-based data visualization. Built entirely from scratch using standard C++ libraries.
 
-The application is fully interactive, running from a robust menu system. All changes, such as adding new users or new friendships, are automatically saved to the data files upon exiting the program.
+## Key Features
 
-How to Compile
-Navigate to the project's root directory.
-This will compile all .cpp files and create a single executable named recommender.
+### 1. Advanced Graph Algorithms
+The core engine utilizes several well-known data science algorithms to deliver highly intelligent friendship recommendations and network analysis:
+- **Influence (PageRank + Jaccard):** Recommends users based on shared interests (Jaccard Similarity) coupled with true network influence computed via the **PageRank** algorithm (transitive popularity).
+- **Proximity (Adamic-Adar Index):** Evaluates "friends-of-friends." Unlike simple common-friend counts, Adamic-Adar gives more weight to shared friends who are less connected themselves, predicting much stronger intimate connections.
+- **Hybrid Recommender:** A robust, weighted ensemble model fusing the normalized PageRank/Jaccard score with the Adamic-Adar index.
+- **Degrees of Separation (BFS):** Implements a Breadth-First Search to find the shortest path between any two disparate users.
+- **Network Centrality:** Computes Betweenness Centrality and Closeness Centrality to identify the most critical bridge nodes and most accessible users in the graph.
+- **Community Detection:** Analyzes the network structure to uncover isolated or tightly-knit sub-communities.
+
+### 2. Dynamic Graph Engine & Persistence
+The social network is highly interactive and perfectly stateful.
+- **Graph Mutations:** Add new users, assign them a custom list of personality tags (solving the "cold start" recommendation problem), and dynamically forge or sever undirected friendship edges.
+- **Automatic Persistence:** Upon exiting the application, all structural changes (nodes, edges, tags) are automatically serialized and saved to flat-file storage in the `data/` directory, ensuring no work is lost between sessions.
+
+### 3. Interactive Web Export & Visualization
+The C++ backend includes a custom `WebExporter` that serializes the current network state into JavaScript (`graph_data.js`).
+- **Browser-based Visuals:** Open `index.html` to view a stunning, interactive force-directed graph of the social network.
+- **Rich Metadata:** Nodes are colored heuristically based on user tags (e.g., coding, art, sports). The web view exposes user details, tag arrays, friend lists, and computed PageRank scores via interactive profile cards.
+
+## Tech Stack & Architecture
+- **Language:** C++17 (Strictly standard library - STL: `std::unordered_map`, `std::unordered_set`, `std::vector`, etc.)
+- **Frontend Visualization:** HTML5, CSS3, JavaScript (consuming the exported C++ data structures)
+- **Architecture:** 
+  - `SocialNetwork`: Core class encapsulating the graph adjacency lists and disk I/O.
+  - `algorithms/`: Modular, custom-built implementations of PageRank, Adamic-Adar, BFS, Centrality, and Community Detection.
+  - `WebExporter`: Data serialization layer mapping C++ state to JS objects.
+
+## Code Structure
+
+- `main.cpp`: Contains all the logic for the interactive menu system and user input validation.
+- `SocialNetwork.h` / `.cpp`: The core class that holds the graph data (adjacency lists) and tag data. It manages all data modifications (adding users/friends) and file I/O (loading and saving).
+- `algorithms/`: A directory containing all "from scratch" algorithm implementations.
+  - `pagerank.h` / `.cpp`: Implements the PageRank algorithm.
+  - `proximity.h` / `.cpp`: Implements the Adamic-Adar algorithm.
+  - `influence.h` / `.cpp`: Implements the PageRank * Jaccard score.
+  - `hybrid.h` / `.cpp`: Implements the combined hybrid model.
+  - `bfs.h` / `.cpp`: Implements the Breadth-First Search algorithm for shortest paths.
+- `utils.h`: Contains helper functions like `jaccard_similarity`.
+- `data/`: Contains the graph edge list and tag files.
+- `Makefile`: The build script.
+
+## Compilation & Usage
+
+Use the provided `Makefile` to compile the C++ application into a single executable:
+
+```bash
+# Compile the application
 make
-To clean up all build files (all .o files and the executable), run:
-make clean
 
-How to Run
-This project uses a user-friendly, interactive menu. You do not need any command-line arguments.
-Run the executable:
+# Run the interactive CLI menu
 ./recommender
-You will be greeted with the main menu, from which you can navigate to all features.
+```
 
-Core Features
+To view the network visualization, simply open `index.html` in any modern web browser after interacting with the console app to generate updated data.
 
-This project includes a wide range of advanced graph algorithms and application features.
-Advanced Recommendation Algorithms
-
-The core recommendation engine has been upgraded from simple counts to more advanced, well-known data science algorithms.
-
-Influence (PageRank + Jaccard): Recommends users based on a combination of shared interests (Jaccard Similarity) and true influence. 
-
-Influence is no longer a simple friend count (Degree) but is now calculated using the PageRank algorithm, which measures transitive popularity.
-
-Proximity (Adamic-Adar): Recommends "friends-of-friends." This is no longer a simple "common friend" count. It now uses the Adamic-Adar index, which gives more weight to common friends who are "closer" (i.e., have fewer friends themselves), resulting in much smarter recommendations.
-
-Hybrid (Weighted Sum): A robust hybrid model that combines the normalized PageRank/Jaccard score and the Adamic-Adar score.
-
-Dynamic Graph Engine
-
-The social network is not static. You can modify it in real-time.
-
-Create New Users: The "Create New User" menu allows you to add a new user to the graph. You can give them a new User ID and assign them a custom list of personality tags. This is a perfect demonstration of solving the "cold start" problem (new users with 0 friends).
-
-Manage Friendships: The "Manage Friendships" menu allows you to dynamically add or remove a friendship (an edge) between any two users in the graph.
-
-Persistence (Save on Exit)
-
-This is a stateful application. You do not lose your work when you quit.
-
-Automatic Save: All changes—including new users you create and new friendships you add or remove—are automatically saved back to the data/ files when you select "Save and Exit" from the main menu. The next time you launch the program, your modified graph is loaded.
-
-Graph Analysis Tools
-
-Shortest Path (BFS): The "Find Shortest Path" feature allows you to find the "degrees of separation" between any two users. It uses a Breadth-First Search (BFS) algorithm implemented from scratch to find and display the shortest path (e.g., 1 -> 5 -> 12 -> 11).
-
-Robust User Interface
-
-Interactive Menu: All features are accessible through a robust, multi-layered, interactive menu system with full input validation to prevent crashes from bad input.
-
-Recommendation Sub-Menu: When getting recommendations, you are placed in a sub-menu. This allows you to select a user and then run all three recommendation algorithms (Influence, Proximity, Hybrid) on that same user without having to go back to the main menu.
-
-Code Structure
-
-main.cpp: Contains all the logic for the interactive menu system and user input validation.
-
-SocialNetwork.h / .cpp: The core class that holds the graph data (adjacency lists) and tag data. It manages all data modifications (adding users/friends) and file I/O (loading and saving).
-
-algorithms/: A directory containing all "from scratch" algorithm implementations.
-
-pagerank.h / .cpp: Implements the PageRank algorithm.
-
-proximity.h / .cpp: Implements the Adamic-Adar algorithm.
-
-influence.h / .cpp: Implements the PageRank * Jaccard score.
-
-hybrid.h / .cpp: Implements the combined hybrid model.
-
-bfs.h / .cpp: Implements the Breadth-First Search algorithm for shortest paths.
-
-utils.h: Contains helper functions like jaccard_similarity.
-
-data/: Contains the graph edge list and tag files.
-
-Makefile: The build script.
+To clean up object files:
+```bash
+make clean
+```
